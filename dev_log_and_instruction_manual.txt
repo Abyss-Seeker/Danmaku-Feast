@@ -1,0 +1,32 @@
+This devlog starts from 2024/05/08. This is when the prototype is about half done (including the bullet class inheritance and etc.)
+2024/05/08 - Abyss Seeker
+1. Finalized inheritance structure of boss bullets. Here is how it works:
+####################
+- The update function is basically the main thing, in which you put new functions in the bullet collection bullets in via inheritance and overriding.
+    - The original update from bullet includes simple movement
+- The checking collision with wall and player are in the main loop in Boss_Fight_Challenge.py for now
+    - If colliding player, player's health gets deducted by bullet.damage
+    - If colliding wall, bullet is removed
+- All boss bullets are now saved in the boss_bullets list
+- I did not modify the player bullets since 1) I am lazy 2) Currently there are only two types of player bullets
+####################
+2. Modified parameter of bullet class. Here are the basic parameters:
+####################
+-     def __init__(self, x, y, speed, color, angle, dimensions, damage):  # Added damage
+        self.x = x
+        self.y = y
+        self.speed = speed
+        self.angle = angle
+        self.color = color
+        self.angle = angle
+        self.damage = damage
+####################
+3. Simplified all appending bullets in Danmaku.py of the boss to the function "shoot", which appends the bullet to the boss_bullet
+    - Beware that if you want to add bullets (split, shatter, etc.) or so I still recommend you to do that by directly appending in the update() function of the bullet.
+4. Modified bullet "update(self)" function to "update(self,player)"
+    - Even if you are not going to use the player argument, just leave it there.
+5. Future tasks:
+    - Alter player bullet inheritance
+    - Debug
+    - Work on GUI
+    - Work on game structure (macro)

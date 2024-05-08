@@ -18,7 +18,7 @@ def rotate_coordinates(x_center, y_center, x, y, radius, angle):
 
 class Bullet():
     """Note: the pathways for different bullet shape is completely different. BE WARNED"""
-    def __init__(self, x, y, speed, color, angle, dimensions):
+    def __init__(self, x, y, speed, color, angle, dimensions, damage):
         # self.symbol = bullet_symbol
         self.x = x
         self.y = y
@@ -26,6 +26,7 @@ class Bullet():
         self.angle = angle
         self.color = color
         self.angle = angle
+        self.damage = damage
 
         # Circular pathway
         if len(dimensions) == 1:
@@ -54,7 +55,7 @@ class Bullet():
         print(self.SHAPE)
         print(self.angle)
 
-    def update(self):
+    def update(self, player):
         """Update position of the bullet"""
         self.y += self.speed * cos(self.angle)
         self.x += self.speed * sin(self.angle)
@@ -78,7 +79,7 @@ class Bullet():
             pygame.draw.polygon(screen, self.color, point_lst)
 
     def check_collision(self, target):
-        
+
         if self.SHAPE == "CIRCULAR":
             distance_x = self.x - (target.x + target.width / 2)
             distance_y = self.y - (target.y + target.height / 2)
@@ -89,7 +90,7 @@ class Bullet():
                 return True
             else:
                 return False
-            
+
         if self.SHAPE == "RECTANGULAR":
             x1, y1 = rotate_coordinates(self.x, self.y, self.x1, self.y1, self.length, -self.angle)
             x2, y2 = rotate_coordinates(self.x, self.y, self.x2, self.y2, self.length, -self.angle)
@@ -107,7 +108,7 @@ class Bullet():
             if x_target < lower_right[0]+target.radius and x_target > upper_left[0]-target.radius:
                 # Check pygame coordinates
                 if y_target > upper_left[1]-target.radius and y_target < lower_right[1]+target.radius:
-                    return True 
+                    return True
                 else:
                     return False
             else:
@@ -115,8 +116,8 @@ class Bullet():
 
 
 class Tracking_Bullet(Bullet):
-    def __init__(self, x, y, speed, color, angle, dimensions, track, target):
-        super().__init__(x, y, speed, color, angle, dimensions)
+    def __init__(self, x, y, speed, color, angle, dimensions, track, target, damage):
+        super().__init__(x, y, speed, color, angle, dimensions, damage)
 
         if self.angle > math.pi:
             while self.angle > math.pi:
@@ -128,7 +129,7 @@ class Tracking_Bullet(Bullet):
         self.track = track
         self.target = target
 
-    def update(self):
+    def update(self, player):
         if self.y == self.target.y:
             target_angle = self.angle # Placeholder to prevent 0 division
         else:
@@ -161,34 +162,40 @@ class Tracking_Bullet(Bullet):
 
 
 class Boss_Bullet(Bullet):
-    def update(self):
+    def update(self, player):
         self.y += self.speed * cos(self.angle)
         self.x += self.speed * sin(self.angle)
 
-class Boss_8_Split_Bullet(Bullet):
+class Boss_8_Split_Bullet(Bullet):  # DONE
+    def update(self, player):
+        super().update(player)
+        if self.y < 0 or self.y > screen_height or self.x < 0 or self.x > screen_width:
+            self.split()
+            boss_bullets.remove(self)
+
     def split(self):
         for i in range(1,11):
-            boss_bullets.append(Boss_Bullet(self.x * 0.99, self.y * 0.99, 4, WHITE, self.angle + pi/5 * i, [5]))
+            boss_bullets.append(Boss_Bullet(self.x * 0.99, self.y * 0.99, 4, WHITE, self.angle + pi/5 * i, [5], 10))
 
-class Boss_Slow_Down_Bullet(Bullet):
-    def __init__(self, x, y, speed, color, angle, dimensions, acc):
-        super().__init__(x, y, speed, color, angle, dimensions)
+class Boss_Slow_Down_Bullet(Bullet):  # DONE
+    def __init__(self, x, y, speed, color, angle, dimensions, acc, damage):
+        super().__init__(x, y, speed, color, angle, dimensions, damage)
         self.acceleration = acc
 
-    def update(self):
+    def update(self, player):
         self.y += self.speed * cos(self.angle)
         self.x += self.speed * sin(self.angle)
         self.speed += self.acceleration
         if self.speed <= 0:
-            boss_slow_down_bullets.remove(self)
+            boss_bullets.remove(self)
 
 
-class Boss_Shatter_Explosion_Bullet(Boss_Slow_Down_Bullet, Boss_8_Split_Bullet):
+class Boss_Shatter_Explosion_Bullet(Boss_Slow_Down_Bullet, Boss_8_Split_Bullet):  # DONE
     triggered_time = None
     def minor_split(self):
         for i in range(1,7):
-            boss_bullets.append(Boss_Bullet(self.x * 0.99, self.y * 0.99, 4, WHITE, self.angle + pi/3 * i, [5]))
-    def update(self):
+            boss_bullets.append(Boss_Bullet(self.x * 0.99, self.y * 0.99, 4, WHITE, self.angle + pi/3 * i, [5], damage=10))
+    def update(self, player):
         if self.triggered_time is None:
             if self.speed > 0:
                 self.y += self.speed * cos(self.angle)
@@ -201,8 +208,14 @@ class Boss_Shatter_Explosion_Bullet(Boss_Slow_Down_Bullet, Boss_8_Split_Bullet):
         if self.triggered_time is not None:
             if pygame.time.get_ticks() - self.triggered_time >= 2000:
                 self.split()
-                if self in boss_shatter_explosion_bullets:
-                    boss_shatter_explosion_bullets.remove(self)
+                if self in boss_bullets:
+                    boss_bullets.remove(self)
+        # 检查Far Collision
+        if self.check_far_collision(player) or (
+                self.y < 0 or self.y > screen_height or self.x < 0 or self.x > screen_width):
+            self.minor_split()
+            if self in boss_bullets:
+                boss_bullets.remove(self)
     def check_far_collision(self, target):
         # Calculate the distance between the center of the bullet and the center of the player
         distance_x = self.x - (target.x + target.width / 2)

@@ -26,7 +26,8 @@ import inspect
 
 def game(screen):
     # 创建玩家对象
-    player = Player(screen_width // 2 - 10, screen_height - 40, 5, 100)  # TODO
+    global player
+    player = Player(screen_width // 2 - 10, screen_height - 40, 5, 100)  # TODO: may need to change health and stuffs
 
     # 创建Boss对象
     boss = Boss(screen_width // 2 - 20, screen_height // 2 - 270, 2, 1000)
@@ -64,7 +65,7 @@ def game(screen):
             player.draw(screen)
 
             for bullet in bullets:
-                bullet.update()
+                bullet.update(player)
                 bullet.draw(screen)
 
                 # 检查子弹是否击中Boss
@@ -90,60 +91,18 @@ def game(screen):
 
 
             for boss_bullet in boss_bullets:
-                boss_bullet.update()
+                boss_bullet.update(player)
                 boss_bullet.draw(screen)
 
                 # 检查Boss子弹是否击中玩家
                 if boss_bullet.check_collision(player):
-                    player.health -= 10
+                    player.health -= boss_bullet.damage
                     boss_bullets.remove(boss_bullet)
 
                 # 检查Boss子弹是否超出屏幕
                 if boss_bullet.y < 0 or boss_bullet.y > screen_height or boss_bullet.x < 0 or boss_bullet.x > screen_width:
                     if boss_bullet in boss_bullets:
                         boss_bullets.remove(boss_bullet)
-
-            for boss_8_split_bullet in boss_8_split_bullets:
-                boss_8_split_bullet.update()
-                boss_8_split_bullet.draw(screen)
-
-                # 检查Boss子弹是否击中玩家
-                if boss_8_split_bullet.check_collision(player):
-                    player.health -= 20
-                    boss_8_split_bullets.remove(boss_8_split_bullet)
-
-                # 检查Boss子弹是否超出屏幕
-                if boss_8_split_bullet.y < 0 or boss_8_split_bullet.y > screen_height or boss_8_split_bullet.x < 0 or boss_8_split_bullet.x > screen_width:
-                    boss_8_split_bullet.split()
-                    boss_8_split_bullets.remove(boss_8_split_bullet)
-
-            for boss_slow_down_bullet in boss_slow_down_bullets:
-                boss_slow_down_bullet.update()
-                boss_slow_down_bullet.draw(screen)
-
-                if boss_slow_down_bullet.check_collision(player):
-                    player.health -= 10
-                    boss_slow_down_bullets.remove(boss_slow_down_bullet)
-                # 检查Boss子弹是否超出屏幕
-                if boss_slow_down_bullet.y < 0 or boss_slow_down_bullet.y > screen_height or boss_slow_down_bullet.x < 0 or boss_slow_down_bullet.x > screen_width:
-                    boss_slow_down_bullets.remove(boss_slow_down_bullet)
-
-            for boss_shatter_explosion_bullet in boss_shatter_explosion_bullets:
-                boss_shatter_explosion_bullet.update()
-                boss_shatter_explosion_bullet.draw(screen)
-
-                # 检查Boss子弹是否击中玩家
-                if boss_shatter_explosion_bullet.check_collision(player):
-                    player.health -= 20
-                    if boss_shatter_explosion_bullet in boss_shatter_explosion_bullets:
-                        boss_shatter_explosion_bullets.remove(boss_shatter_explosion_bullet)
-
-                # 检查Far Collision
-                if boss_shatter_explosion_bullet.check_far_collision(player) or (boss_shatter_explosion_bullet.y < 0 or boss_shatter_explosion_bullet.y > screen_height or boss_shatter_explosion_bullet.x < 0 or boss_shatter_explosion_bullet.x > screen_width):
-                    boss_shatter_explosion_bullet.minor_split()
-                    if boss_shatter_explosion_bullet in boss_shatter_explosion_bullets:
-                        boss_shatter_explosion_bullets.remove(boss_shatter_explosion_bullet)
-
 
             boss.update()
             boss.draw(screen)
