@@ -13,11 +13,8 @@ BOSS_COLOR = (176, 120, 50)
 PLAYER_COLOR = (253,219,109)
 
 # 存储子弹的列表
-bullets = []
+bullets = []  # 存储Player子弹的列表
 boss_bullets = []  # 存储Boss子弹的列表
-boss_8_split_bullets = []  # 暂时存储Boss8裂子弹的列表
-boss_slow_down_bullets = []  # 暂时存储Boss减缓速度子弹的列表
-boss_shatter_explosion_bullets = []  # 暂时存储Boss爆炸分裂（减速）子弹的列表
 
 Player_x = 0
 Player_y = 0

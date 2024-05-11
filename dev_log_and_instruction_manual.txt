@@ -1,4 +1,5 @@
 This devlog starts from 2024/05/08. This is when the prototype is about half done (including the bullet class inheritance and etc.)
+=========================
 2024/05/08 - Abyss Seeker
 1. Finalized inheritance structure of boss bullets. Here is how it works:
 ####################
@@ -30,3 +31,8 @@ This devlog starts from 2024/05/08. This is when the prototype is about half don
     - Debug
     - Work on GUI
     - Work on game structure (macro)
+
+=========================
+2024/05/11 - Abyss Seeker
+1. Added reset functions for the temporary variables
+2. Added movement modules (Pending), along with 2 movement methods of the boss class

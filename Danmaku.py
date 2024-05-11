@@ -41,7 +41,7 @@ def S_spray_2(self):  # DONE
         self.S_flag_2 = 0
     if self.S_temp_count_frequency_modifier_2 < 0:
         self.S_flag_2 = 1
-    print(self.S_flag_2, self.S_temp_count_frequency_modifier_2)
+    # print(self.S_flag_2, self.S_temp_count_frequency_modifier_2)
     if self.S_flag_2:
         self.S_temp_count_frequency_modifier_2 += 1
     else:
@@ -107,7 +107,7 @@ def S_slow_down_shotgun(self, freq, density, size, speed):  # DONE
     if (config.Player_y + config.Player_height / 2) - (self.y + self.width / 2) <= 0:
         angle += pi
     if self.S_temp_count_frequency_modifier_slow_down % freq == 0:
-        print(angle)
+        # print(angle)
         for i in range(density):
             self.shoot(Boss_Slow_Down_Bullet(self.x + self.width / 2, self.y + self.height / 2, speed * random.uniform(0.8, 1.2), WHITE, angle + random.uniform(-0.1,0.1), [size * random.uniform(0.8,1.2)], -0.033, damage=10))
 
@@ -118,3 +118,4 @@ def S_shatter_explosion(self):  # DONE
     if self.S_temp_count_frequency_modifier_split % 25 == 0:
         self.shoot(Boss_Shatter_Explosion_Bullet(self.x+self.width/2, self.y+self.height/2, 6*random.uniform(0.6, 1.2), WHITE,
                                                         angle+random.uniform(-0.3,0.3), [7], -0.033 * random.uniform(0.75, 1.25), damage=20))
+

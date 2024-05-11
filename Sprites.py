@@ -7,6 +7,7 @@ import random
 import config
 from Bullet_Collection import *
 from Danmaku import *
+from Movement import *
 
 
 class Player:
@@ -122,10 +123,36 @@ class Boss:
         self.S_temp_count_frequency_modifier_split = 0
         # For S_slow_down_shot
         self.S_temp_count_frequency_modifier_slow_down = 0
-
+        # For M_infinity_movement
+        self.M_infinity_temp_count = 0
+        # For M_circle_movement
+        self.M_circle_temp_count = 0
         # 好笑的
         self.radius = min([self.width, self.height]) / 2
 
+    # For resetting variables
+    def S_spray_variable_reset(self):
+        self.S_temp = 0
+        self.S_temp_count = 0
+        self.S_temp_count_frequency_modifier = 0
+
+    def S_spray_2_variable_reset(self):
+        self.S_temp_count_frequency_modifier_2 = 0
+        self.S_temp_2 = 0
+        self.S_temp_count_2 = 0
+        self.S_flag_2 = 1
+
+    def S_split_variable_reset(self):
+        self.S_temp_count_frequency_modifier_split = 0
+
+    def S_slow_down_shot_variable_reset(self):
+        self.S_temp_count_frequency_modifier_slow_down = 0
+
+    def M_infinity_movement_variable_reset(self):
+        self.M_infinity_temp_count = 0
+
+    def M_circle_movement_variable_reset(self):
+        self.M_circle_temp_count = 0
 
     def update(self):
         current_time = pygame.time.get_ticks()
@@ -138,19 +165,28 @@ class Boss:
                 self.health += 0.5
             else:
                 self.health += self.HEALTH - self.health
-        if self.attack == 0:
+        if self.attack == 0:  # FIXME: FOR MODIFYING THE DANMAKU ATTACK PATTERNS
+            # self.S_spray_variable_reset()
+            # self.S_slow_down_shot_variable_reset()
+            # self.M_infinity_movement_variable_reset()
+            M_circle_movement(self, 2, 2)
             S_spray(self)
             S_slow_down_shotgun(self, 150, 10, 5.5, 8)
         elif self.attack == 1:
+            # self.S_spray_2_variable_reset()
+            # self.S_slow_down_shot_variable_reset()
             S_spray_2(self)
             S_slow_down_shotgun(self, 150, 10, 5.5, 8)
         elif self.attack == 2:
+            # self.S_split_variable_reset()
             S_split(self)
             # S_spray(self)
             # S_spray_2(self)
         elif self.attack == 3:
+            # self.S_slow_down_shot_variable_reset()
             S_slow_down_shotgun(self, 50, 10, 5.5, 8)
         elif self.attack == 4:
+            # self.S_split_variable_reset()
             S_shatter_explosion(self)
 
 
@@ -166,7 +202,18 @@ class Boss:
 
     def shoot(self, boss_bullet):
         boss_bullets.append(boss_bullet)
-        # boss_8_split_bullets.append(Boss_8_Split_Bullet(self.x + self.width / 2, self.y + self.height / 2, speed, color, size, angle))  # 整活用
+
+    def move(self, dx, dy):
+        self.x += dx
+        self.y += dy
+
+    def move_angle(self, magnitude, angle):
+        angle_rad = math.radians(angle)
+        dx = magnitude * math.cos(angle_rad)
+        dy = magnitude * math.sin(angle_rad)
+        self.x += dx
+        self.y += dy
+
 
 class Boss_Marker:
     def __init__(self, boss):

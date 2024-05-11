@@ -5,6 +5,7 @@ from math import *
 import time
 import random
 from Danmaku import *
+from Movement import *
 from Bullet_Collection import *
 from Sprites import *
 from config import *

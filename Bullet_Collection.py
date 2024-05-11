@@ -52,8 +52,8 @@ class Bullet():
 
             self.SHAPE = "RECTANGULAR"
 
-        print(self.SHAPE)
-        print(self.angle)
+        # print(self.SHAPE)
+        # print(self.angle)
 
     def update(self, player):
         """Update position of the bullet"""
