@@ -36,3 +36,7 @@ This devlog starts from 2024/05/08. This is when the prototype is about half don
 2024/05/11 - Abyss Seeker
 1. Added reset functions for the temporary variables
 2. Added movement modules (Pending), along with 2 movement methods of the boss class
+=========================
+2024/05/14 - Abyss Seeker
+1. Finalized "Infinite movement" movement module
+2. Altered some danmakus

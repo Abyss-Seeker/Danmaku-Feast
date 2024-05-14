@@ -81,11 +81,11 @@ class Player:
     def shoot(self, target):
         current_time = pygame.time.get_ticks()
         if current_time - self.last_shot > self.shoot_delay:
-            bullet = Bullet(self.x+self.width//2, self.y-10, -10, PLAYER_COLOR, 0, [6.5, 4.5], 2)
+            bullet = Bullet(self.x+self.width//2, self.y-10, -35, PLAYER_COLOR, 0, [6.5, 4.5], 2)
             bullets.append(bullet)
-            bullet = Tracking_Bullet(self.x+self.width//2, self.y-10, -10, BLUE, -0.1, [3.5], 0.0075, target, 1.5)
+            bullet = Tracking_Bullet(self.x+self.width//2, self.y-10, -15, BLUE, -0.1, [3.5], 0.01, target, 1.5)
             bullets.append(bullet)
-            bullet = Tracking_Bullet(self.x+self.width//2, self.y-10, -10, BLUE, 0.1, [3.5], 0.0075, target, 1.5)
+            bullet = Tracking_Bullet(self.x+self.width//2, self.y-10, -15, BLUE, 0.1, [3.5], 0.01, target, 1.5)
             bullets.append(bullet)
 
             self.last_shot = current_time
@@ -109,7 +109,7 @@ class Boss:
         self.chance = 1
         self.HEALTH = health
         self.S_bullet_angle = 0
-        self.attack = 0  # FIXME: THIS IS WHERE YOU DEBUG THE LEVELS, NEEDS TO BE CHANGED IN LATER UPDATES
+        self.attack = 1  # FIXME: THIS IS WHERE YOU DEBUG THE LEVELS, NEEDS TO BE CHANGED IN LATER UPDATES
         # For S_spray
         self.S_temp = 0
         self.S_temp_count = 0
@@ -169,19 +169,20 @@ class Boss:
             # self.S_spray_variable_reset()
             # self.S_slow_down_shot_variable_reset()
             # self.M_infinity_movement_variable_reset()
-            M_circle_movement(self, 2, 2)
+            M_infinity_movement(self, speed=0.02, magnitude=2)
             S_spray(self)
             S_slow_down_shotgun(self, 150, 10, 5.5, 8)
         elif self.attack == 1:
             # self.S_spray_2_variable_reset()
             # self.S_slow_down_shot_variable_reset()
+            M_infinity_movement(self, speed=0.02, magnitude=2)
             S_spray_2(self)
             S_slow_down_shotgun(self, 150, 10, 5.5, 8)
         elif self.attack == 2:
             # self.S_split_variable_reset()
             S_split(self)
             # S_spray(self)
-            # S_spray_2(self)
+            # S_spray_2(self
         elif self.attack == 3:
             # self.S_slow_down_shot_variable_reset()
             S_slow_down_shotgun(self, 50, 10, 5.5, 8)
