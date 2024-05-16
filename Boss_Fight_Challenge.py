@@ -126,9 +126,10 @@ def game(screen):
                 game_over = True
 
         pygame.display.flip()
+        print(len(boss_bullets), len(bullets))
         clock.tick(60)
 
-    pygame.quit()
+    # pygame.quit()
 
 if __name__ == '__main__':
     screen_position = (screen_width - 100, screen_height // 2 - 380)

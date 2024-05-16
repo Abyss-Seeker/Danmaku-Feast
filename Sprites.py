@@ -82,11 +82,11 @@ class Player:
         current_time = pygame.time.get_ticks()
         if current_time - self.last_shot > self.shoot_delay:
             bullet = Bullet(self.x+self.width//2, self.y-10, -35, PLAYER_COLOR, 0, [6.5, 4.5], 2)
-            bullets.append(bullet)
+            config.bullets.append(bullet)
             bullet = Tracking_Bullet(self.x+self.width//2, self.y-10, -15, BLUE, -0.1, [3.5], 0.01, target, 1.5)
-            bullets.append(bullet)
+            config.bullets.append(bullet)
             bullet = Tracking_Bullet(self.x+self.width//2, self.y-10, -15, BLUE, 0.1, [3.5], 0.01, target, 1.5)
-            bullets.append(bullet)
+            config.bullets.append(bullet)
 
             self.last_shot = current_time
 
@@ -98,7 +98,7 @@ class Player:
 
 # 创建Boss类
 class Boss:
-    def __init__(self, x, y, speed, health):
+    def __init__(self, x, y, speed, health, attack=0):
         # self.symbol = boss_symbol
         self.x = x
         self.y = y
@@ -109,7 +109,7 @@ class Boss:
         self.chance = 1
         self.HEALTH = health
         self.S_bullet_angle = 0
-        self.attack = 1  # FIXME: THIS IS WHERE YOU DEBUG THE LEVELS, NEEDS TO BE CHANGED IN LATER UPDATES
+        self.attack = attack  # FIXME: THIS IS WHERE YOU DEBUG THE LEVELS, NEEDS TO BE CHANGED IN LATER UPDATES
         # For S_spray
         self.S_temp = 0
         self.S_temp_count = 0
@@ -202,7 +202,7 @@ class Boss:
         self.health = 200
 
     def shoot(self, boss_bullet):
-        boss_bullets.append(boss_bullet)
+        config.boss_bullets.append(boss_bullet)
 
     def move(self, dx, dy):
         self.x += dx
