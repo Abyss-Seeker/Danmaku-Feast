@@ -25,13 +25,13 @@ import inspect
 # BOSS_COLOR = (176, 120, 50)
 
 
-def game(screen):
+def game(screen, attack=0):
     # 创建玩家对象
     global player
     player = Player(screen_width // 2 - 10, screen_height - 40, 5, 100)  # TODO: may need to change health and stuffs
 
     # 创建Boss对象
-    boss = Boss(screen_width // 2 - 20, screen_height // 2 - 270, 2, 1000)
+    boss = Boss(screen_width // 2 - 20, screen_height // 2 - 270, 2, 1000, attack=attack)
     boss_marker = Boss_Marker(boss)
 
     # 游戏主循环

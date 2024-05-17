@@ -5,6 +5,13 @@ from pygame.locals import *
 from config import *
 import Boss_Fight_Challenge
 
+'''
+FIXME: 这里import practice的话会有一个circular import的问题，但是不知如何我这里没有报错
+       但是我在尝试加一个结算界面的时候报错了，就是那个Results.py
+       所以最好的方法是吧font_title, font_subtitle, font_option, draw_text放到一个新的文件里面然后再import
+'''
+import Practice
+
 # Define colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -116,7 +123,7 @@ if __name__ == '__main__':
             # Handle highscores option
             pass
         elif option == 'practice':
-            # Handle highscores option
-            pass
+            Practice.game(screen)
         elif option == 'exit':
+            #Results.game(screen)
             pygame.quit()
