@@ -127,6 +127,10 @@ class Boss:
         self.M_infinity_temp_count = 0
         # For M_circle_movement
         self.M_circle_temp_count = 0
+        # For S_glider
+        self.S_temp_count_frequency_modifier_glider = 0
+        # For S_skimmer
+        self.S_temp_count_frequency_modifier_skimmer = 0
         # 好笑的
         self.radius = min([self.width, self.height]) / 2
 
@@ -147,6 +151,12 @@ class Boss:
 
     def S_slow_down_shot_variable_reset(self):
         self.S_temp_count_frequency_modifier_slow_down = 0
+
+    def S_glider_variable_reset(self):
+        self.S_temp_count_frequency_modifier_glider = 0
+
+    def S_skimmer_variable_reset(self):
+        self.S_temp_count_frequency_modifier_skimmer = 0
 
     def M_infinity_movement_variable_reset(self):
         self.M_infinity_temp_count = 0
@@ -189,6 +199,10 @@ class Boss:
         elif self.attack == 4:
             # self.S_split_variable_reset()
             S_shatter_explosion(self)
+        elif self.attack == 5:
+            S_glider(self)
+        elif self.attack == 6:
+            S_skimmer(self)
 
 
     def draw(self, screen):

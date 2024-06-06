@@ -33,6 +33,7 @@ font_title = pygame.font.SysFont(None, 48)
 font_subtitle = pygame.font.SysFont(None, 24)
 font_options = pygame.font.SysFont(None, 36)
 
+
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect()

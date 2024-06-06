@@ -227,3 +227,32 @@ class Boss_Shatter_Explosion_Bullet(Boss_Slow_Down_Bullet, Boss_8_Split_Bullet):
             return True
         else:
             return False
+
+class Boss_Glider_Bullet(Bullet):
+    def __init__(self, x, y, speed, color, angle, dimensions, damage, freq):
+        super().__init__(x, y, speed, color, angle, dimensions, damage)
+        self.freq = freq
+        self.freq_clock = 0
+    def update(self, player):
+        super().update(player)
+        self.freq_clock += 1
+        if self.freq_clock % self.freq == 0:
+            boss_bullets.append(Boss_Bullet(self.x + self.radius / 2, self.y + self.radius / 2, 4, WHITE, self.angle + pi / 2, [5], 10))
+            boss_bullets.append(Boss_Bullet(self.x + self.radius / 2, self.y + self.radius / 2, 4, WHITE,
+                                            self.angle + 3 * pi / 2, [5], 10))
+
+class Boss_Skimmer_Bullet(Bullet):
+    def __init__(self, x, y, speed, color, angle, dimensions, damage, freq, angle_velo):
+        super().__init__(x, y, speed, color, angle, dimensions, damage)
+        self.freq = freq
+        self.freq_clock = 0
+        self.angle_split = 0
+        self.angle_velo = angle_velo
+    def update(self, player):
+        super().update(player)
+        self.freq_clock += 1
+        self.angle_split += self.angle_velo
+        if self.freq_clock % self.freq == 0:
+            boss_bullets.append(Boss_Bullet(self.x + self.radius / 2, self.y + self.radius / 2, 4, WHITE, self.angle + pi / 2 + self.angle_split, [5], 10))
+            boss_bullets.append(Boss_Bullet(self.x + self.radius / 2, self.y + self.radius / 2, 4, WHITE,
+                                            self.angle + 3 * pi / 2 + self.angle_split, [5], 10))

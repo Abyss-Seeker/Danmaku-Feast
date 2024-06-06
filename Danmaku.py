@@ -121,8 +121,15 @@ def S_shatter_explosion(self):  # DONE
         self.shoot(Boss_Shatter_Explosion_Bullet(self.x+self.width/2, self.y+self.height/2, 6*random.uniform(0.6, 1.2), WHITE,
                                                         angle+random.uniform(-0.3,0.3), [7], -0.033 * random.uniform(0.75, 1.25), damage=20))
 
+def S_glider(self):  # DONE
+    self.S_temp_count_frequency_modifier_glider += 1
+    if self.S_temp_count_frequency_modifier_glider % 15 == 0:
+        self.shoot(Boss_Glider_Bullet(self.x + self.width / 2, self.y + self.height / 2, 5, WHITE, random.uniform(0, 2*pi), [7], damage=20, freq= 20))
 
-
+def S_skimmer(self):  # DONE
+    self.S_temp_count_frequency_modifier_skimmer += 1
+    if self.S_temp_count_frequency_modifier_skimmer % 40 == 0:
+        self.shoot(Boss_Skimmer_Bullet(self.x + self.width / 2, self.y + self.height / 2, 2, WHITE, random.uniform(0, 2*pi), [7], damage=20, freq= 10, angle_velo=0.033))
 
 # TODO: Every time a new danmaku is added, put it's attack index into the dictionary; see Sprites.py file
 danmaku_name = {
@@ -130,5 +137,7 @@ danmaku_name = {
     "Spray danmaku 2": 1,
     "Split danmaku": 2,
     "Shotgun danmaku": 3,
-    "Explosion danmaku": 4
+    "Explosion danmaku": 4,
+    "Glider danmaku": 5,
+    "Skimmer danmaku": 6
 }
